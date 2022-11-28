@@ -1,1 +1,0 @@
-# fishing_app_front_ts
