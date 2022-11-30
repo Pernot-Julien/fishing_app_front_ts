@@ -20,7 +20,7 @@ const adminUserForm: FunctionComponent = () => {
  //? send POST and GET requests when the trigger change
   const [trigger, setTrigger] = useState(false);
 
-  const handleChangeDynamic = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleChangeDynamicUser = (e: React.FormEvent<HTMLInputElement>) => {
     setUser(user => ({
       ...user,
       [e.target.name] : e.target.value
@@ -37,6 +37,12 @@ const adminUserForm: FunctionComponent = () => {
     } 
     axios.post('http://localhost:3000/user', data)
     .then((r) => {
+      setUser(user => ({
+        ...user,
+        username:"",
+        email:"",
+        password:"",
+      }))
       setTrigger(!trigger);
     })
     .catch((e) => console.log(e))
@@ -64,11 +70,11 @@ const adminUserForm: FunctionComponent = () => {
     <h1 className="text-3xl font-bold underline">Users</h1>
     <form className="border-2 border-sky-500 p-3" onSubmit={handleSubmitUser}>
       <label htmlFor="email" className="ml-2">Email</label>
-      <input className="border-2 border-sky-500 ml-2" type="email" id="email" value={user.email} onChange={handleChangeDynamic} name="email" />
+      <input className="border-2 border-sky-500 ml-2" type="email" id="email" value={user.email} onChange={handleChangeDynamicUser} name="email" />
       <label htmlFor="username" className="ml-2">Username</label>
-      <input className="border-2 border-sky-500 ml-2" type="text" id="username" value={user.username} onChange={handleChangeDynamic} name="username" />
+      <input className="border-2 border-sky-500 ml-2" type="text" id="username" value={user.username} onChange={handleChangeDynamicUser} name="username" />
       <label htmlFor="password" className="ml-2">Password</label>
-      <input className="border-2 border-sky-500 ml-2" type="text" id="password" value={user.password} onChange={handleChangeDynamic} name="password" /> 
+      <input className="border-2 border-sky-500 ml-2" type="text" id="password" value={user.password} onChange={handleChangeDynamicUser} name="password" /> 
       <button className="border-2 border-sky-500 ml-2" type="submit">Envoyer</button>
     </form>
       <table className="table-auto mt-6 ml-6">

@@ -2,58 +2,73 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 const AdminFishForm = () => {
-    
-    const [fish, setFish] = useState([]);
-    const [trigger, setTrigger] = useState(false);
-    
-      const handleSubmitFish = (e) => {
-        e.preventDefault();
-        //console.log('dfgfddrfgdf')
-        const form = e.target;
-        const elements = form.elements;
-        const espece = elements.espece.value;
-        const taille = elements.taille.value;
-        const description = elements.description.value;
-        //console.log(espece);
-    
-        const data = {
-          espece,
-          taille,
-          description,
-        }
-        axios.post('http://localhost:3000/fish', data)
-        .then((r) => {form.reset();
-         setTrigger(!trigger)})
-        .catch((e) => console.log(e)) 
-      }
-    
-    
-      const handleDeleteFish = (id) => {
-        axios.delete(`http://localhost:3000/fish/${id}`)
-        .then((r) => {console.log(r);
-         setTrigger(!trigger)})
-        .catch((e) => console.log(e))
-      }
-    
-      useEffect(() => {
-        axios.get('http://localhost:3000/fish')
-        .then((r) => setFish(r.data) )
-        .catch((e) => console.log(e))
-      },[trigger])
-    
-    
-   // console.log('fish',fish) 
+  //?fish's state
+  const [fish, setFish] = useState({
+  espece:"",
+  taille:"",
+  description:"",
+  fishGetList: [],
+  });
+  //? send POST and GET requests when the trigger change
+  const [trigger, setTrigger] = useState(false);
+
+  const handleChangeDynamicFish = (e: React.FormEvent<HTMLInputElement>) => {
+  setFish(fish => ({
+  ...fish,
+  [e.target.name] : e.target.value
+  }))
+  };
+
+  const handleSubmitFish = (e) => {
+    e.preventDefault();
+  
+    const data = {
+      espece: fish.espece,
+      taille: fish.taille,
+      description: fish.description
+    }
+    axios.post('http://localhost:3000/fish', data)
+    .then((r) => {
+      setFish(fish => ( {
+        ...fish,
+        espece:"",
+        taille:"",
+        description:"",
+      }))
+      setTrigger(!trigger)})
+    .catch((e) => console.log(e)) 
+  }
+
+
+  const handleDeleteFish = (id) => {
+    axios.delete(`http://localhost:3000/fish/${id}`)
+    .then((r) => {console.log(r);
+      setTrigger(!trigger)})
+    .catch((e) => console.log(e))
+  }
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/fish')
+    .then((r) => setFish(fish =>( 
+    {
+      ...fish,
+      fishGetList : r.data,
+    }
+  )
+    ))
+    .catch((e) => console.log(e))
+  },[trigger])
   
       return (
         <>
         <h1 className="text-3xl font-bold underline">Fish</h1>
         <form className="border-2 border-sky-500 p-3" onSubmit={handleSubmitFish}>
           <label className="ml-2">Espece</label>
-          <input className="border-2 border-sky-500 ml-2" name='espece'type="text" />
+          <input className="border-2 border-sky-500 ml-2" name='espece'type="text" value={fish.espece} onChange={handleChangeDynamicFish} />
           <label className="ml-2">Taille</label>
-          <input className="border-2 border-sky-500 ml-2" name='taille' type="text" />
+          <input className="border-2 border-sky-500 ml-2" name='taille' type="text" value={fish.taille} onChange={handleChangeDynamicFish} />
           <label className="ml-2">Description</label>
-          <input className="border-2 border-sky-500 ml-2" name='description'type="text" />
+          <input className="border-2 border-sky-500 ml-2" name='description'type="text" value={fish.description} onChange={handleChangeDynamicFish} />
           <button className="border-2 border-sky-500 ml-2" type="submit">Envoyer</button>
         </form> 
         <table className="table-auto mt-6 ml-6">
@@ -66,7 +81,7 @@ const AdminFishForm = () => {
           </thead>
           <tbody>
             { 
-              fish.map((item) =>
+              fish.fishGetList.map((item) =>
                 <tr key={item.ID}>
                   <td className="border-2 border-green-600 p-6">{item.espece}</td>
                   <td className="border-2 border-green-600 p-6">{item.taille}</td>
