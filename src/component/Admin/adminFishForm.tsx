@@ -8,13 +8,13 @@ const AdminFishForm = () => {
     
       const handleSubmitFish = (e) => {
         e.preventDefault();
-        console.log('dfgfddrfgdf')
+        //console.log('dfgfddrfgdf')
         const form = e.target;
         const elements = form.elements;
         const espece = elements.espece.value;
         const taille = elements.taille.value;
         const description = elements.description.value;
-        console.log(espece);
+        //console.log(espece);
     
         const data = {
           espece,
@@ -42,7 +42,7 @@ const AdminFishForm = () => {
       },[trigger])
     
     
-    console.log('fish',fish) 
+   // console.log('fish',fish) 
   
       return (
         <>
