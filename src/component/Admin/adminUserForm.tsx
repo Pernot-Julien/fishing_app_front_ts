@@ -4,17 +4,23 @@ import { FormEvent, FunctionComponent, useEffect, useState } from "react";
 
 const adminUserForm: FunctionComponent = () => {
 
+/* interface userInterface {
+  username: string,
+  email: string,
+  password: string,
+} */
+
   //?user's state
   const [user, setUser] = useState({
-    username:"test username",
-    email:"test mail",
-    password:"test mdp",
+    username:"",
+    email:"",
+    password:"",
     userGetList:[],
   });
  //? send POST and GET requests when the trigger change
   const [trigger, setTrigger] = useState(false);
 
-  const handleChangeDynamic = (e) => {
+  const handleChangeDynamic = (e: React.FormEvent<HTMLInputElement>) => {
     setUser(user => ({
       ...user,
       [e.target.name] : e.target.value
@@ -35,7 +41,7 @@ const adminUserForm: FunctionComponent = () => {
     })
     .catch((e) => console.log(e))
   }
-  const handleDeleteUser = (id) => {
+  const handleDeleteUser = (id: number) => {
     axios.delete(`http://localhost:3000/user/${id}`)
     .then((r) => setTrigger(!trigger))
     .catch((e) => console.log(e))
