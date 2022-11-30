@@ -1,12 +1,13 @@
-import Admin from './Admin/admin'
 import './App.css'
+import Map from './map/map'
+
 
 function App() {
 
 
   return (
     <div className="App">
-      <Admin />
+      <Map />
     </div>
   )
 }
