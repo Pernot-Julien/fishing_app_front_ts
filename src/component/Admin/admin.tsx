@@ -7,6 +7,6 @@ const Admin = () => {
         <AdminUserForm />
         <AdminFishForm />
     </>
-  )
+  );
 }
 export default Admin

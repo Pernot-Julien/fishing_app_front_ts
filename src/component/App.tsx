@@ -1,5 +1,5 @@
 import './App.css'
-import Map from './map/map'
+import LandingPage from './landingPage/LandingPage'
 
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
 
   return (
     <div className="App">
-      <Map />
+      <LandingPage />
     </div>
   )
 }
